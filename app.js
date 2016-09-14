@@ -140,7 +140,7 @@ function generateTable(objectToPrint) {
     table.style.borderCollapse = "collapse";
     var tableBody = document.createElement("tbody");
     var firstRow = document.createElement("tr");
-    var firstCell = document.createElement("td");
+    var firstCell = document.createElement("th");
     firstCell.width = "100";
     firstCell.align = "center";
     var firstCellText = document.createTextNode("Date\\User");
@@ -179,7 +179,7 @@ function generateTable(objectToPrint) {
 
     for (var userIndex in objectToPrint) {
         // console.log(userIndex);
-        var cell = document.createElement("td");
+        var cell = document.createElement("th");
         cell.width = "150";
         cell.align = "center";
         var text = document.createTextNode(userIndex);
@@ -193,19 +193,19 @@ function generateTable(objectToPrint) {
         for(var rowIndex in rows)
         {
             if(rowIndex>0){
-                console.log(rows[rowIndex].className);
+                //console.log(rows[rowIndex].className);
                 var checker = [];
                 
                 var emptyCell = document.createElement("td");
                 emptyCell.innerHTML = "";
+                emptyCell.align = "center";
 
                 for (var dateIndex in objectToPrint[userIndex]) {
                     var cellToAddWithResult = document.createElement("td");
                     cellToAddWithResult.className = userIndex;
                     cellToAddWithResult.innerHTML = objectToPrint[userIndex][dateIndex].hour;
-                    
-                    //var emptyCell = document.createElement("td");
-                    //emptyCell.innerHTML = "";
+                    cellToAddWithResult.align = "center";
+
                     emptyCell.className = userIndex;
 
                     if(rows[rowIndex].className === dateIndex){
@@ -214,7 +214,7 @@ function generateTable(objectToPrint) {
                     }
                     
                     if((rows[rowIndex].className < dateIndex && !checker[rowIndex])) {
-                        console.log(checker[rowIndex]);
+                        //console.log(checker[rowIndex]);
                         rows[rowIndex].appendChild(emptyCell);
                         checker[rowIndex] = true;
                     }
@@ -232,8 +232,7 @@ function generateTable(objectToPrint) {
     body.appendChild(table);
 }
 
-
-//AS 6
+//AS6
 function uniq(a) {
     return Array.from(new Set(a));
 }
