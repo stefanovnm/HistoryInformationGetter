@@ -175,6 +175,7 @@ function generateTable(objectToPrint) {
     }
 
     console.log(objectToPrint);
+        
 
     for (var userIndex in objectToPrint) {
         // console.log(userIndex);
@@ -186,22 +187,44 @@ function generateTable(objectToPrint) {
         cell.className = userIndex;
         firstRow.appendChild(cell);
 
-        for (var dateIndex in objectToPrint[userIndex]) {
-            var cellToAddWithResult = document.createElement("td");
-            cellToAddWithResult.innerHTML = objectToPrint[userIndex][dateIndex].hour;
+        var rows = table.getElementsByTagName('tr');
+        
 
-            //console.log(cellToAddWithResult);
+        for(var rowIndex in rows)
+        {
+            if(rowIndex>0){
+                console.log(rows[rowIndex].className);
+                var checker = [];
+                
+                var emptyCell = document.createElement("td");
+                emptyCell.innerHTML = "";
 
-            
-            row = document.getElementsByClassName(dateIndex);
-            var nextCell = row.insertCell(1);
+                for (var dateIndex in objectToPrint[userIndex]) {
+                    var cellToAddWithResult = document.createElement("td");
+                    cellToAddWithResult.className = userIndex;
+                    cellToAddWithResult.innerHTML = objectToPrint[userIndex][dateIndex].hour;
+                    
+                    //var emptyCell = document.createElement("td");
+                    //emptyCell.innerHTML = "";
+                    emptyCell.className = userIndex;
 
-            console.log(nextCell);
+                    if(rows[rowIndex].className === dateIndex){
+                        rows[rowIndex].appendChild(cellToAddWithResult);
+                        checker[rowIndex] = true;
+                    }
+                    
+                    if((rows[rowIndex].className < dateIndex && !checker[rowIndex])) {
+                        console.log(checker[rowIndex]);
+                        rows[rowIndex].appendChild(emptyCell);
+                        checker[rowIndex] = true;
+                    }
+                }
 
-             //console.log(dateIndex);
-            //rowToAddWithResult.appendChild(cellToAddWithResult);
+                if(!checker[rowIndex]){
+                    rows[rowIndex].appendChild(emptyCell);
+                }
+            }  
         }
-
     }
 
     var body = document.getElementsByTagName("body")[0];
@@ -216,7 +239,7 @@ function uniq(a) {
 }
 
 function convertDate(oldDate) {
-    var newDate = "d" + oldDate.substring(6, 10) + oldDate.substring(3, 5) + oldDate.substring(0, 2);
+    var newDate = oldDate.substring(6, 10) + oldDate.substring(3, 5) + oldDate.substring(0, 2);
     return newDate;
 }
 
