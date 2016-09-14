@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <style src="style.css"></style>
+    
 </head>
 <body>
     <input type="file" name="file" id="file">
+    <input type="text" name="firstDate" placeholder="first date" id="firstDate" onkeyup="filterByFirstDate()">
+    <input type="text" name="secondDate" placeholder="second date" id="secondDate" onkeyup="filterBySecondDate()">
+    <script src="filter.js"></script>
+    <p></p>
     <script src="app.js"></script>
 </body>
 </html>
