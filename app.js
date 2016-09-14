@@ -1,7 +1,5 @@
 var objectToPrint = {};
 
-var cellWidth = "150";
-
 document.getElementById('file').onchange = function () {
     var file = this.files[0];
 
@@ -71,7 +69,7 @@ document.getElementById('file').onchange = function () {
         for (var key in byUser) {
 
             var previousDate = byUser[key][0].date;
-            numberOfSaves = 0,
+                numberOfSaves = 0,
                 numberOfNumberings = 0,
                 numberOfAutosaves = 0;
 
@@ -95,7 +93,7 @@ document.getElementById('file').onchange = function () {
                 if (previousDate !== currentDate) {
                     numberOfSaves = 0;
                     numberOfNumberings = 0,
-                        numberOfAutosaves = 0;
+                    numberOfAutosaves = 0;
                 }
 
                 sorted[key][currentDate].hours.push(byUser[key][index].hour);
@@ -125,6 +123,7 @@ document.getElementById('file').onchange = function () {
                 var element = sorted[userIndex][dateIndex].hours;
 
                 sorted[userIndex][dateIndex].hour = element[0] + " - " + element[element.length - 1];
+                sorted[userIndex][dateIndex].workingHours = getWorkingHours(element[0], element[element.length - 1]);
                 // console.log(sorted[userIndex][dateIndex].hour);
             }
         }
@@ -139,19 +138,15 @@ document.getElementById('file').onchange = function () {
 
 function generateTable(objectToPrint) {
     var table = document.createElement("table");
-    table.style.borderCollapse = "collapse";
     var tableBody = document.createElement("tbody");
     var firstRow = document.createElement("tr");
     var firstCell = document.createElement("th");
-    firstCell.width = cellWidth;
-    firstCell.align = "center";
-    var firstCellText = document.createTextNode("Date\\User");
+        var firstCellText = document.createTextNode("Date\\User");
     firstCell.appendChild(firstCellText);
     firstRow.appendChild(firstCell);
     tableBody.appendChild(firstRow);
     table.appendChild(tableBody);
-    table.border = "2";
-
+    
     var allDates = [];
 
     for (var userInd in objectToPrint) {
@@ -171,8 +166,7 @@ function generateTable(objectToPrint) {
         rowToAdd.className = uniqueDates[dateToAddIndex];
         var cellToAdd = document.createElement("td");
         cellToAdd.innerHTML = uniqueDates[dateToAddIndex];
-        cellToAdd.align = "center";
-        cellToAdd.width = cellWidth;
+
         rowToAdd.appendChild(cellToAdd);
         tableBody.appendChild(rowToAdd);
     }
@@ -183,8 +177,6 @@ function generateTable(objectToPrint) {
     for (var userIndex in objectToPrint) {
         // console.log(userIndex);
         var cell = document.createElement("th");
-        cell.width = cellWidth;
-        cell.align = "center";
         var text = document.createTextNode(userIndex);
         cell.appendChild(text);
         cell.className = userIndex;
@@ -201,15 +193,11 @@ function generateTable(objectToPrint) {
                 
                 var emptyCell = document.createElement("td");
                 emptyCell.innerHTML = "";
-                emptyCell.width = cellWidth;
-                emptyCell.align = "center";
 
                 for (var dateIndex in objectToPrint[userIndex]) {
                     var cellToAddWithResult = document.createElement("td");
                     cellToAddWithResult.className = userIndex;
-                    cellToAddWithResult.innerHTML = objectToPrint[userIndex][dateIndex].hour;
-                    cellToAddWithResult.width = cellWidth;
-                    cellToAddWithResult.align = "center";
+                    cellToAddWithResult.innerHTML = objectToPrint[userIndex][dateIndex].workingHours;
 
                     emptyCell.className = userIndex;
 
@@ -235,6 +223,7 @@ function generateTable(objectToPrint) {
     var body = document.getElementsByTagName("body")[0];
 
     body.appendChild(table);
+    makeColors();
 }
 
 //AS6
@@ -247,4 +236,45 @@ function convertDate(oldDate) {
     return newDate;
 }
 
+function makeColors() {
+    var rows = document.getElementsByTagName('tr');
+    //console.log(rows.length);
 
+    for(var row of rows){
+        var child = row.childNodes;
+        for(var ind in child){
+            if(ind % 2 === 1){
+                child[ind].style.backgroundColor = "#e9e9e9";
+            }
+        }
+    }
+}
+
+function getWorkingHours(firstHour, secondHour) {
+    var hour;
+
+    if(firstHour === secondHour){
+        hour = '1:00';
+    } else {
+        var firstHours = parseInt(firstHour.substring(0,2));
+        var firstMinutes = parseInt(firstHour.substring(3,5));
+        var secondHours = parseInt(secondHour.substring(0,2));
+        var secondMinutes = parseInt(secondHour.substring(3,5));
+        
+        //console.log(firstHours + ":" + firstMinutes + " - " + secondHours + ":" + secondMinutes);
+        
+        var hours = secondHours - firstHours;
+
+        var minutes = secondMinutes - firstMinutes;
+
+        if (secondMinutes < firstMinutes) {
+            minutes = 60 + secondMinutes - firstMinutes;
+            hours -= 1;
+        }
+        hour = hours + ":" + minutes;
+    }
+
+    //console.log(hour);
+
+    return hour;
+}
