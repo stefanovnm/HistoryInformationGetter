@@ -1,5 +1,7 @@
 var objectToPrint = {};
 
+var cellWidth = "150";
+
 document.getElementById('file').onchange = function () {
     var file = this.files[0];
 
@@ -141,7 +143,7 @@ function generateTable(objectToPrint) {
     var tableBody = document.createElement("tbody");
     var firstRow = document.createElement("tr");
     var firstCell = document.createElement("th");
-    firstCell.width = "100";
+    firstCell.width = cellWidth;
     firstCell.align = "center";
     var firstCellText = document.createTextNode("Date\\User");
     firstCell.appendChild(firstCellText);
@@ -170,6 +172,7 @@ function generateTable(objectToPrint) {
         var cellToAdd = document.createElement("td");
         cellToAdd.innerHTML = uniqueDates[dateToAddIndex];
         cellToAdd.align = "center";
+        cellToAdd.width = cellWidth;
         rowToAdd.appendChild(cellToAdd);
         tableBody.appendChild(rowToAdd);
     }
@@ -180,7 +183,7 @@ function generateTable(objectToPrint) {
     for (var userIndex in objectToPrint) {
         // console.log(userIndex);
         var cell = document.createElement("th");
-        cell.width = "150";
+        cell.width = cellWidth;
         cell.align = "center";
         var text = document.createTextNode(userIndex);
         cell.appendChild(text);
@@ -198,12 +201,14 @@ function generateTable(objectToPrint) {
                 
                 var emptyCell = document.createElement("td");
                 emptyCell.innerHTML = "";
+                emptyCell.width = cellWidth;
                 emptyCell.align = "center";
 
                 for (var dateIndex in objectToPrint[userIndex]) {
                     var cellToAddWithResult = document.createElement("td");
                     cellToAddWithResult.className = userIndex;
                     cellToAddWithResult.innerHTML = objectToPrint[userIndex][dateIndex].hour;
+                    cellToAddWithResult.width = cellWidth;
                     cellToAddWithResult.align = "center";
 
                     emptyCell.className = userIndex;
